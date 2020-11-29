@@ -2,6 +2,7 @@ package com.dream.flink.io;
 
 import com.dream.flink.data.Order;
 import com.dream.flink.data.OrderGenerator;
+import com.dream.flink.state.restore.ide.CheckpointRestoreByIDEUtils;
 import com.dream.flink.util.CheckpointUtil;
 import org.apache.flink.api.common.functions.FilterFunction;
 import org.apache.flink.api.common.functions.MapFunction;
@@ -24,7 +25,7 @@ public class BigStateIOOptimization {
     public static void main(String[] args) throws Exception {
 
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
-        CheckpointUtil.setConfYamlStateBackend(env);
+        CheckpointUtil.setFsStateBackend(env);
         env.setParallelism(1);
 
         EnvironmentSettings mySetting = EnvironmentSettings
@@ -49,5 +50,7 @@ public class BigStateIOOptimization {
                 .print();
 
         env.execute(BigStateIOOptimization.class.getSimpleName());
+//        String externalCheckpoint = "file:///Users/fanrui03/Documents/tmp/checkpoint/f74a3a6af248b9aaeb81f61f83164c31/chk-1";
+//        CheckpointRestoreByIDEUtils.run(env.getStreamGraph(), externalCheckpoint);
     }
 }
